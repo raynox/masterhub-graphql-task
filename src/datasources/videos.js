@@ -1,11 +1,17 @@
 const { DataSource } = require('apollo-datasource');
 const videos = require('../videos/data');
+const ip = require("ip");
 
-const mapVideo = video => ({
-  ...video,
-  url: `${process.env.HOST_URL}/assets/videos/${video.id}.mp4`,
-  thumbnail: `${process.env.HOST_URL}/assets/images/${video.id}.jpg`,
-});
+const mapVideo = video => {
+  const ipAddress = ip.address();
+  const port = process.env.PORT;
+
+  return {
+    ...video,
+    url: `http://${ipAddress}:${port}/assets/videos/${video.id}.mp4`,
+    thumbnail: `http://${ipAddress}:${port}/assets/images/${video.id}.jpg`,
+  }
+};
 
 class VideosAPI extends DataSource {
 
